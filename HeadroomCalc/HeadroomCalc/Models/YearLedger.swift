@@ -7,7 +7,7 @@ import SwiftData
 @Model
 final class YearLedger {
     @Attribute(.unique) var year: Int
-    @Relationship(inverse: \FilingProfile.ledgers)
+    @Relationship(deleteRule: .nullify)
     var profile: FilingProfile?
     @Relationship(deleteRule: .cascade, inverse: \IncomeEntry.ledger)
     var entries: [IncomeEntry] = []
