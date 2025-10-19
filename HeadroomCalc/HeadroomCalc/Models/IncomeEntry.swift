@@ -13,6 +13,7 @@ final class IncomeEntry {
     var displayName: String
     var amount: Double
     var symbol: String?
+    @Relationship(inverse: \YearLedger.entries)
     var ledger: YearLedger?
 
     // Optional equity metadata

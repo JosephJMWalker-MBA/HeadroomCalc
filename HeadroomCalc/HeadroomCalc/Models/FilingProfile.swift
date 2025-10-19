@@ -17,6 +17,8 @@ enum FilingStatus: String, Codable, CaseIterable, Identifiable {
 final class FilingProfile {
     var status: FilingStatus
     var standardDeduction: Double   // v1: simple; can evolve by year/age later
+    @Relationship(deleteRule: .cascade, inverse: \YearLedger.profile)
+    var ledgers: [YearLedger] = []
 
     init(status: FilingStatus = .single, standardDeduction: Double = 14600) {
         self.status = status

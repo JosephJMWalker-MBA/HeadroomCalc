@@ -162,7 +162,19 @@ struct ContentView: View {
     }
 
     private func deleteYears(at offsets: IndexSet) {
-        for index in offsets { modelContext.delete(ledgers[index]) }
+        let ledgersToDelete = offsets.compactMap { index in
+                    ledgers.indices.contains(index) ? ledgers[index] : nil
+                }
+
+                if let selected = selection, ledgersToDelete.contains(where: { $0 === selected }) {
+                    selection = nil
+                }
+
+                for ledger in ledgersToDelete {
+                    modelContext.delete(ledger)
+                }
+
+                selection = selection ?? ledgers.first
         selection = ledgers.first
     }
 
