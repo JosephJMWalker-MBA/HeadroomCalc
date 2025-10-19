@@ -146,17 +146,7 @@ struct ContentView: View {
             return
         }
 
-        let cloned = YearLedger(year: newYear,
-                                profile: mostRecent.profile.map { FilingProfile(status: $0.status,
-                                                                                standardDeduction: $0.standardDeduction) },
-                                entries: mostRecent.entries.map {
-                                    IncomeEntry(sourceType: $0.sourceType,
-                                                displayName: $0.displayName,
-                                                amount: $0.amount,
-                                                shares: $0.shares,
-                                                fairMarketPrice: $0.fairMarketPrice,
-                                                costBasisPerShare: $0.costBasisPerShare)
-                                })
+        let cloned = mostRecent.cloned(forYear: newYear)
         modelContext.insert(cloned)
         selection = cloned
     }
