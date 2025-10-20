@@ -25,6 +25,7 @@ final class FilingProfile {
          ledgers: [YearLedger] = []) {
         self.status = status
         self.standardDeduction = standardDeduction
+        self.ledgers = ledgers
         for ledger in ledgers {
             ledger.profile = self
         }
