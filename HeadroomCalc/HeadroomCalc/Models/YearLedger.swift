@@ -16,6 +16,9 @@ final class YearLedger {
         self.year = year
         self.profile = profile
         self.entries = entries
+        if let profile, profile.ledgers.contains(where: { $0 === self }) == false {
+            profile.ledgers.append(self)
+        }
         // Ensure inverse is set for any pre-seeded entries
         for e in self.entries { e.ledger = self }
     }
