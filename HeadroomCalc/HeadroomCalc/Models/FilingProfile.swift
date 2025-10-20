@@ -20,8 +20,14 @@ final class FilingProfile {
     @Relationship(deleteRule: .cascade, inverse: \YearLedger.profile)
     var ledgers: [YearLedger] = []
 
-    init(status: FilingStatus = .single, standardDeduction: Double = 14600) {
+    init(status: FilingStatus = .single,
+         standardDeduction: Double = 14600,
+         ledgers: [YearLedger] = []) {
         self.status = status
         self.standardDeduction = standardDeduction
+        self.ledgers = ledgers
+        for ledger in ledgers {
+            ledger.profile = self
+        }
     }
 }
