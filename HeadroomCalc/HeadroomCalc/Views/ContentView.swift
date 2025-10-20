@@ -152,20 +152,25 @@ struct ContentView: View {
     }
 
     private func deleteYears(at offsets: IndexSet) {
+        let current = ledgers
         let ledgersToDelete = offsets.compactMap { index in
-                    ledgers.indices.contains(index) ? ledgers[index] : nil
-                }
+            current.indices.contains(index) ? current[index] : nil
+        }
+        guard !ledgersToDelete.isEmpty else { return }
 
-                if let selected = selection, ledgersToDelete.contains(where: { $0 === selected }) {
-                    selection = nil
-                }
+        let remaining = current.enumerated().compactMap { index, element in
+            offsets.contains(index) ? nil : element
+        }
+        let idsToDelete = Set(ledgersToDelete.map { ObjectIdentifier($0) })
+        let shouldResetSelection = selection.map { idsToDelete.contains(ObjectIdentifier($0)) } ?? false
 
-                for ledger in ledgersToDelete {
-                    modelContext.delete(ledger)
-                }
+        for ledger in ledgersToDelete {
+            modelContext.delete(ledger)
+        }
 
-                selection = selection ?? ledgers.first
-        selection = ledgers.first
+        if shouldResetSelection {
+            selection = remaining.first
+        }
     }
 
     private func ensureProfile(for ledger: YearLedger) {
